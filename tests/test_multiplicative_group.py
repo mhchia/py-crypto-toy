@@ -1,18 +1,27 @@
+import secrets
+import binascii
+from typing import Sequence
+
 from cryptotoy.multiplicative_group import MultiplicativeElement
 
 
-def gen_multiplicative_group(g: int):
-    pass
+def gen_cyclic_group(g: MultiplicativeElement) -> Sequence[MultiplicativeElement]:
+    cur = g
+    identity = g.identity
+    elements = [identity]
+    while cur != identity:
+        elements.append(cur)
+        cur = cur.operate(g)
+    return elements
 
 
-def test_multiplicative_group_element():
+def test_group_element():
     mg = MultiplicativeElement(35, 9)
-    assert not mg.is_cyclic()
     assert mg.inverse() == MultiplicativeElement(35, 4)
     assert mg == mg.operate(mg.identity)
     identity = mg.identity
     assert identity.operate(identity) == identity
-    # More test for the group properties(closed, associative, id, and inverse)?
+    # TODO: More test for the group properties(closed, associative, id, and inverse)?
 
 
 def test_multiplicative_group_generator():

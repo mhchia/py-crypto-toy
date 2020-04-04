@@ -1,5 +1,5 @@
 from .abc import GroupElement
-from .math import extended_euclidean, is_coprime, is_prime
+from .math import extended_euclidean, is_coprime
 
 
 class MultiplicativeElement(GroupElement):
@@ -20,17 +20,12 @@ class MultiplicativeElement(GroupElement):
     def __repr__(self) -> str:
         return f"<MultiplicativeElement {self.value} (mod {self.n})>"
 
-    def is_cyclic(self) -> bool:
-        # This could be really slow when `n` is large
-        return is_prime(self.n)
-
     @property
     def identity(self) -> 'MultiplicativeElement':
         return self.__class__(self.n, 1)
 
     def operate(self, other: "MultiplicativeElement") -> "MultiplicativeElement":
         new_value = (self.value * other.value) % self.n
-        print(f"!@# new_value={new_value}")
         return self.__class__(self.n, new_value)
 
     def inverse(self) -> "MultiplicativeElement":
@@ -40,5 +35,21 @@ class MultiplicativeElement(GroupElement):
             raise ValueError(f"value={self.value} must be coprime to n={self.n}")
         return self.__class__(self.n, coeff[0])
 
-    # TODO: How to pick a random element?
-    # TODO: How to calculate k*G faster? (Probably through k = 2^0+2^1+...)
+    def exponentiate(self, exponent: int) -> "MultiplicativeElement":
+        # Ref: https://en.wikipedia.org/wiki/Exponentiation_by_squaring#Basic_method
+        cur_base = self
+        y = self.identity
+        if exponent < 0:
+            cur_base = cur_base.inverse()
+            exponent *= - 1
+        if exponent == 0:
+            return self.identity
+        while exponent > 1:
+            if exponent % 2 == 0:
+                cur_base = cur_base.operate(cur_base)
+                exponent //= 2
+            else:
+                y = cur_base.operate(y)
+                cur_base = cur_base.operate(cur_base)
+                exponent = (exponent - 1) // 2
+        return y.operate(cur_base)
