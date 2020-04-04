@@ -2,10 +2,10 @@ import secrets
 import binascii
 from typing import Sequence
 
-from cryptotoy.multiplicative_group import MultiplicativeElement
+from cryptotoy.multiplicative_group import MultiplicativeGroupElement
 
 
-def gen_cyclic_group(g: MultiplicativeElement) -> Sequence[MultiplicativeElement]:
+def gen_cyclic_group(g: MultiplicativeGroupElement) -> Sequence[MultiplicativeGroupElement]:
     cur = g
     identity = g.identity
     elements = [identity]
@@ -16,8 +16,8 @@ def gen_cyclic_group(g: MultiplicativeElement) -> Sequence[MultiplicativeElement
 
 
 def test_group_element():
-    mg = MultiplicativeElement(35, 9)
-    assert mg.inverse() == MultiplicativeElement(35, 4)
+    mg = MultiplicativeGroupElement(35, 9)
+    assert mg.inverse() == MultiplicativeGroupElement(35, 4)
     assert mg == mg.operate(mg.identity)
     identity = mg.identity
     assert identity.operate(identity) == identity
@@ -26,7 +26,7 @@ def test_group_element():
 
 def test_generator():
     # 5 is a generator, which should be able to generate all elements
-    g = MultiplicativeElement(23, 5)
+    g = MultiplicativeGroupElement(23, 5)
     elements = gen_cyclic_group(g)
     # euler totient function
     assert len(elements) == (23 - 1)
@@ -54,7 +54,7 @@ C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F
     modulus_hex_str = modulus_repr.replace(' ', '').replace('\n', '')
     modulus_bytes = binascii.unhexlify(modulus_hex_str)
     modulus_int = int.from_bytes(modulus_bytes, 'big')
-    g = MultiplicativeElement(modulus_int, 2)
+    g = MultiplicativeGroupElement(modulus_int, 2)
     a = secrets.randbelow(modulus_int)
     b = secrets.randbelow(modulus_int)
     g_a = g.exponentiate(a)
