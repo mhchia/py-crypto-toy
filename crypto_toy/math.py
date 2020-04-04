@@ -2,7 +2,9 @@ import math
 from typing import Tuple
 
 
-def extended_euclidean(a: int, b: int, coeff_a: Tuple[int, int] = (1, 0), coeff_b: Tuple[int, int] = (0, 1)) -> Tuple[int, Tuple[int, int]]:
+def extended_euclidean(
+    a: int, b: int, coeff_a: Tuple[int, int] = (1, 0), coeff_b: Tuple[int, int] = (0, 1)
+) -> Tuple[int, Tuple[int, int]]:
     if b > a:
         a, b = b, a
         coeff_a, coeff_b = coeff_b, coeff_a

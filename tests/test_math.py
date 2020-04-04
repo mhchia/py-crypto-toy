@@ -1,6 +1,6 @@
-from cryptotoy.math import extended_euclidean, is_coprime, is_prime
-
 import pytest
+
+from crypto_toy.math import extended_euclidean, is_coprime, is_prime
 
 
 def test_extended_euclidean():
@@ -21,7 +21,31 @@ def test_is_coprime():
 @pytest.mark.parametrize(
     "number",
     (
-        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17,
+        19,
+        23,
+        29,
+        31,
+        37,
+        41,
+        43,
+        47,
+        53,
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
     ),
 )
 def test_is_prime_true(number):
@@ -29,10 +53,7 @@ def test_is_prime_true(number):
 
 
 @pytest.mark.parametrize(
-    "number",
-    (
-        -1, 0,
-    ),
+    "number", (-1, 0,),
 )
 def test_is_prime_raise(number):
     with pytest.raises(ValueError):
@@ -40,10 +61,7 @@ def test_is_prime_raise(number):
 
 
 @pytest.mark.parametrize(
-    "number",
-    (
-        1, 4, 6, 8, 9, 10, 12
-    ),
+    "number", (1, 4, 6, 8, 9, 10, 12),
 )
 def test_is_prime_false(number):
     assert not is_prime(number)

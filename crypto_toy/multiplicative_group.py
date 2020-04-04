@@ -21,10 +21,12 @@ class MultiplicativeGroupElement(GroupElement):
         return f"<MultiplicativeGroupElement {self.value} (mod {self.n})>"
 
     @property
-    def identity(self) -> 'MultiplicativeGroupElement':
+    def identity(self) -> "MultiplicativeGroupElement":
         return self.__class__(self.n, 1)
 
-    def operate(self, other: "MultiplicativeGroupElement") -> "MultiplicativeGroupElement":
+    def operate(
+        self, other: "MultiplicativeGroupElement"
+    ) -> "MultiplicativeGroupElement":
         new_value = (self.value * other.value) % self.n
         return self.__class__(self.n, new_value)
 
@@ -41,7 +43,7 @@ class MultiplicativeGroupElement(GroupElement):
         y = self.identity
         if exponent < 0:
             cur_base = cur_base.inverse()
-            exponent *= - 1
+            exponent *= -1
         if exponent == 0:
             return self.identity
         while exponent > 1:

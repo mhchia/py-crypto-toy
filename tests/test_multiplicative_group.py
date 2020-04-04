@@ -1,11 +1,13 @@
-import secrets
 import binascii
+import secrets
 from typing import Sequence
 
-from cryptotoy.multiplicative_group import MultiplicativeGroupElement
+from crypto_toy.multiplicative_group import MultiplicativeGroupElement
 
 
-def gen_cyclic_group(g: MultiplicativeGroupElement) -> Sequence[MultiplicativeGroupElement]:
+def gen_cyclic_group(
+    g: MultiplicativeGroupElement,
+) -> Sequence[MultiplicativeGroupElement]:
     cur = g
     identity = g.identity
     elements = [identity]
@@ -51,9 +53,9 @@ C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F
 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D
 670C354E 4ABC9804 F1746C08 CA237327 FFFFFFFF FFFFFFFF
 """
-    modulus_hex_str = modulus_repr.replace(' ', '').replace('\n', '')
+    modulus_hex_str = modulus_repr.replace(" ", "").replace("\n", "")
     modulus_bytes = binascii.unhexlify(modulus_hex_str)
-    modulus_int = int.from_bytes(modulus_bytes, 'big')
+    modulus_int = int.from_bytes(modulus_bytes, "big")
     g = MultiplicativeGroupElement(modulus_int, 2)
     a = secrets.randbelow(modulus_int)
     b = secrets.randbelow(modulus_int)
